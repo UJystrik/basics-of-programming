@@ -24,13 +24,18 @@ BEGIN{ReadDigit}
       IF Ch = '9' THEN D := 9 ELSE
         D := -1           
     END
+  ELSE
+    D := -1
 END;{ReadDigit}
 BEGIN{ReadDigitPrgm}
-  WHILE (NOT EOLN(INPUT)) AND (D <> -1)
+  WHILE D <> -1
   DO
     BEGIN
       ReadDigit(INPUT, D);
       S := S + D
     END;
-  WRITELN('Сумма введенных цифр:', S)  
+  IF D = -1
+  THEN
+    S := S + 1;
+  WRITELN(OUTPUT, 'Сумма введенных цифр:', S)  
 END.{ReadDigitPrgm} 
