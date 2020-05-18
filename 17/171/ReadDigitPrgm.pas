@@ -28,14 +28,13 @@ BEGIN{ReadDigit}
     D := -1
 END;{ReadDigit}
 BEGIN{ReadDigitPrgm}
+  ReadDigit(INPUT, D);
+  S := 0;
   WHILE D <> -1
   DO
     BEGIN
-      ReadDigit(INPUT, D);
-      S := S + D
+      S := S + D;
+      ReadDigit(INPUT, D)
     END;
-  IF D = -1
-  THEN
-    S := S + 1;
   WRITELN(OUTPUT, 'Сумма введенных цифр:', S)  
 END.{ReadDigitPrgm} 

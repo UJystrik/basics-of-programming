@@ -1,7 +1,7 @@
 PROGRAM ReadNumberPrgm(INPUT, OUTPUT);
 VAR
   N, Min, Max, Mean, Number, Summ: INTEGER;
-  Check: CHAR;
+  Check, Ch: CHAR;
 PROCEDURE ReadNumber(VAR F: TEXT; VAR N: INTEGER);
 {Преобразует строку цифр из файла до первого нецифрового 
 символа,  в соответствующее целое число N}
@@ -40,9 +40,9 @@ BEGIN{ReadNumber}
   WHILE (D <> -1) AND (N <> -1)
   DO
     BEGIN
-      IF MAXINT - N >= MAXINT - MAXINT DIV 10
+      IF N <= MAXINT DIV 10
       THEN 
-        IF (MAXINT - N * 10 >= D)
+        IF MAXINT - N * 10 >= D
         THEN
           BEGIN
             N := N * 10 + D
@@ -56,17 +56,15 @@ BEGIN{ReadNumber}
 END;{ReadNumber}
 BEGIN{ReadDigitPrgm}
   ReadNumber(INPUT, N);
-  Check := 'N';
-  IF (N <> -1) AND (N <> 0)
+  IF N <> -1
   THEN
     BEGIN
       Summ := N;
       Number := 1;
       Max := N;
-      Min := N;
-      Check := 'Y';
+      Min := N
     END;
-  WHILE (N <> -1) AND (N <> 0)
+  WHILE (N <> -1) AND (N <> 0)     {Ситуация с нулями. Не могу решить из за того, что функция возвращает '0' при любом символе - не цифре, по усолвию задания}
   DO
     BEGIN
       IF Min > N
@@ -88,7 +86,7 @@ BEGIN{ReadDigitPrgm}
         N := -1;
       ReadNumber(INPUT, N);
     END;
-    IF (N <> -1) AND (Check = 'Y')
+    IF N <> -1
     THEN
       BEGIN
         Mean := Summ DIV Number;

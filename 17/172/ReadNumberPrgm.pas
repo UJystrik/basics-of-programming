@@ -39,7 +39,7 @@ BEGIN{ReadNumber}
   WHILE (D <> -1) AND (N <> -1)
   DO
     BEGIN
-      IF MAXINT - N >= MAXINT - MAXINT DIV 10
+      IF N <= MAXINT DIV 10
       THEN 
         IF (MAXINT - N * 10 >= D)
         THEN
