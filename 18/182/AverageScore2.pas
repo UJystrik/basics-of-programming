@@ -2,14 +2,18 @@ PROGRAM AverageScore(INPUT, OUTPUT);
 CONST
   NumberOfScores = 4;
   ClassSize = 4;
+  Radix = 10;
+  MaxScore = 100;
 TYPE
-  Score = 0 .. 100;
+  Score = 0..MaxScore;
 VAR
-  WhichScore: 0 .. NumberOfScores;
-  Student: 0 .. ClassSize;
+  ScoreDomain: SET OF 0..MaxScore;
+  WhichScore: 0..NumberOfScores;
+  Student: 0..ClassSize;
   NextScore: Score;
   Ave, TotalScore, ClassTotal, ScoreCheck: INTEGER;
   Ch: CHAR;
+  Error: BOOLEAN;
   F: TEXT;
 BEGIN {AverageScore}
   ClassTotal := 0;
@@ -26,26 +30,27 @@ BEGIN {AverageScore}
           WRITE(F, Ch)
         END;
       Ch := 'o';
+      Error := FALSE;
       WRITELN(F);
       TotalScore := 0;
       WhichScore := 0;
-      WHILE (WhichScore < NumberOfScores) AND (Ch <> 'Y')
+      WHILE (WhichScore < NumberOfScores) AND (Error = FALSE)
       DO
         BEGIN
           READ(ScoreCheck);
-          IF (ScoreCheck >= 0) AND (ScoreCheck <= 100)
+          IF ScoreCheck IN ScoreDomain
           THEN
             NextScore := ScoreCheck
           ELSE
-            Ch := 'Y'; 
+            Error := TRUE; 
           TotalScore := TotalScore + NextScore;
           WhichScore := WhichScore + 1;
         END;
       READLN;
-      IF Ch <> 'Y'
+      IF Error = FALSE
       THEN
         BEGIN
-          TotalScore := TotalScore * 10;
+          TotalScore := TotalScore * Radix;
           Ave := TotalScore DIV NumberOfScores;
           RESET(F);
           WHILE NOT EOLN(F)
@@ -55,9 +60,9 @@ BEGIN {AverageScore}
               WRITE(Ch)
             END;
           WRITE(' ');
-          IF Ave MOD 10 >= 5
+          IF Ave MOD Radix >= (Radix / 2)
           THEN
-            WRITE(Ave DIV 10 + 1)
+            WRITE(Ave DIV Radix + 1)
           ELSE
             WRITE(Ave DIV 10);
           ClassTotal := ClassTotal + TotalScore;
@@ -68,11 +73,11 @@ BEGIN {AverageScore}
         WRITE('Error')
     END;
   WRITELN;
-  IF Ch <> 'Y'
+  IF Error = FALSE
   THEN
     BEGIN
       WRITELN ('Class average:');
       ClassTotal := ClassTotal DIV (ClassSize * NumberOfScores);
-      WRITELN(ClassTotal DIV 10, '.', ClassTotal MOD 10:1)
+      WRITELN(ClassTotal DIV Radix, '.', ClassTotal MOD Radix:1)
     END
 END.  {AverageScore}
